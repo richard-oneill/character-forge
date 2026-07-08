@@ -1,0 +1,37 @@
+{
+  "_comment": "Loaded ON TOP of data/*.json. Match an existing id to rename/override it; use a new id to add content. Homebrew always wins.",
+
+  "spells": [
+    {
+      "id": "magic-missile",
+      "name": "Arcane Darts",
+      "_note": "Only 'name' is given, so everything else about Magic Missile is inherited unchanged. Every class that references 'magic-missile' now shows it as 'Arcane Darts'."
+    },
+    {
+      "id": "starlight-bolt",
+      "name": "Starlight Bolt",
+      "source": "Homebrew",
+      "level": 1,
+      "school": "Evocation",
+      "castingTime": "1 action",
+      "range": "90 ft",
+      "components": ["V", "S"],
+      "duration": "Instantaneous",
+      "classes": ["wizard"],
+      "desc": "A lance of cold starlight; radiant damage and the target sheds dim light until your next turn."
+    }
+  ],
+
+  "species": [
+    {
+      "id": "aarakocra",
+      "name": "Aarakocra",
+      "source": "Homebrew",
+      "bonus": { "dex": 2, "wis": 1 },
+      "speed": 25,
+      "hpPerLevel": 0,
+      "desc": "Birdfolk who take to the sky with ease.",
+      "traits": ["Flight 50 ft (no medium/heavy armor)", "Talons (natural weapon)"]
+    }
+  ]
+}

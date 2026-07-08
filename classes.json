@@ -1,0 +1,33 @@
+{
+  "type": "classes",
+  "entries": [
+    {
+      "id": "fighter",
+      "name": "Fighter",
+      "source": "SRD",
+      "hd": 10,
+      "saves": ["str", "con"],
+      "skillCount": 2,
+      "skills": ["Acrobatics", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"],
+      "cast": null,
+      "armor": "All armor, shields",
+      "weapons": "Simple, martial",
+      "desc": "Master of weapons and armor in every form.",
+      "features": ["Fighting Style", "Second Wind"]
+    },
+    {
+      "id": "wizard",
+      "name": "Wizard",
+      "source": "SRD",
+      "hd": 6,
+      "saves": ["int", "wis"],
+      "skillCount": 2,
+      "skills": ["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"],
+      "cast": "int",
+      "armor": "None",
+      "weapons": "Daggers, darts, slings, quarterstaffs, light crossbows",
+      "desc": "Scholar of arcane magic wielded through study.",
+      "features": ["Spellcasting", "Arcane Recovery"]
+    }
+  ]
+}
