@@ -1,0 +1,25 @@
+{
+  "type": "backgrounds",
+  "entries": [
+    {
+      "id": "acolyte",
+      "name": "Acolyte",
+      "source": "SRD",
+      "skills": ["Insight", "Religion"],
+      "tools": [],
+      "languages": 2,
+      "feature": "Shelter of the Faithful",
+      "desc": "Devoted servant of a temple or faith."
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "source": "SRD",
+      "skills": ["Arcana", "History"],
+      "tools": [],
+      "languages": 2,
+      "feature": "Researcher",
+      "desc": "Lifelong student of lore and forgotten knowledge."
+    }
+  ]
+}

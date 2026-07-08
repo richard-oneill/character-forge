@@ -1,0 +1,57 @@
+{
+  "type": "spells",
+  "entries": [
+    {
+      "id": "fire-bolt",
+      "name": "Fire Bolt",
+      "source": "SRD",
+      "level": 0,
+      "school": "Evocation",
+      "castingTime": "1 action",
+      "range": "120 ft",
+      "components": ["V", "S"],
+      "duration": "Instantaneous",
+      "classes": ["wizard"],
+      "desc": "A mote of fire streaks toward a target for ranged spell-attack fire damage that scales with level."
+    },
+    {
+      "id": "magic-missile",
+      "name": "Magic Missile",
+      "source": "SRD",
+      "level": 1,
+      "school": "Evocation",
+      "castingTime": "1 action",
+      "range": "120 ft",
+      "components": ["V", "S"],
+      "duration": "Instantaneous",
+      "classes": ["wizard"],
+      "desc": "Three darts of force each strike a chosen target automatically for a small amount of damage."
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "source": "SRD",
+      "level": 1,
+      "school": "Abjuration",
+      "castingTime": "1 reaction",
+      "range": "Self",
+      "components": ["V", "S"],
+      "duration": "1 round",
+      "classes": ["wizard"],
+      "desc": "A reactive barrier grants a burst of extra armor class until the caster's next turn."
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "source": "SRD",
+      "level": 3,
+      "school": "Evocation",
+      "castingTime": "1 action",
+      "range": "150 ft",
+      "components": ["V", "S", "M"],
+      "duration": "Instantaneous",
+      "classes": ["wizard"],
+      "desc": "A bright streak blossoms into a fiery explosion; creatures in the area make a Dexterity save."
+    }
+  ]
+}
