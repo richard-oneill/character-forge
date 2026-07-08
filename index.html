@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Character Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14161d; --panel:#1c2029; --panel2:#232834; --border:#2c3240;
+    --ink:#e8e6df; --muted:#8a91a0; --brass:#c9a227; --cyan:#4bb3c4; --danger:#c85a54; --ok:#6fae6f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;}
+  body{padding-bottom:env(safe-area-inset-bottom);}
+  h1,h2,h3{font-family:'Cinzel',serif;letter-spacing:.02em;margin:0;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  header{position:sticky;top:0;z-index:20;background:rgba(20,22,29,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand h1{font-size:19px;color:var(--brass);font-weight:700;}
+  .brand .sub{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;}
+  .anvil{width:26px;height:26px;flex:none;}
+  .wrap{max-width:720px;margin:0 auto;padding:16px 16px 90px;}
+  .steps{display:flex;gap:6px;margin:14px 0 20px;}
+  .steps .s{flex:1;height:4px;border-radius:2px;background:var(--border);transition:.3s;}
+  .steps .s.on{background:var(--brass);}
+  .steplabel{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 6px;letter-spacing:.04em;}
+  input[type=text]{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--ink);
+    border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit;}
+  input[type=text]:focus{outline:none;border-color:var(--cyan);}
+  .grid{display:grid;gap:10px;}
+  .grid.two{grid-template-columns:1fr 1fr;}
+  .opt{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:13px 14px;cursor:pointer;
+    transition:.15s;text-align:left;color:var(--ink);font-family:inherit;}
+  .opt:hover{border-color:var(--muted);}
+  .opt.sel{border-color:var(--brass);background:#26261c;box-shadow:inset 0 0 0 1px var(--brass);}
+  .opt .name{font-weight:600;font-size:15px;}
+  .opt .meta{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4;}
+  .abrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
+  .abrow:last-child{border-bottom:none;}
+  .abname{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:44px;}
+  .abctl{display:flex;align-items:center;gap:10px;}
+  .step-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--panel2);
+    color:var(--ink);font-size:20px;line-height:1;cursor:pointer;}
+  .step-btn:active{background:var(--cyan);color:#0b0d12;}
+  .abscore{width:34px;text-align:center;font-size:20px;font-weight:700;}
+  .abmod{width:38px;text-align:center;font-size:13px;color:var(--cyan);}
+  .abbonus{font-size:11px;color:var(--brass);width:34px;text-align:right;}
+  .pts{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .pts .big{font-size:22px;font-weight:700;color:var(--brass);}
+  .toggle{display:flex;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:14px;}
+  .toggle button{flex:1;border:none;background:none;color:var(--muted);padding:9px;border-radius:7px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+  .toggle button.on{background:var(--brass);color:#1a1608;}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--border);
+    border-radius:999px;padding:7px 12px;font-size:13px;cursor:pointer;margin:0 6px 8px 0;transition:.15s;}
+  .chip.sel{border-color:var(--brass);background:#26261c;color:var(--brass);}
+  .chip.locked{opacity:.5;border-style:dashed;cursor:not-allowed;}
+  .navbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(20,22,29,.94);backdrop-filter:blur(10px);
+    border-top:1px solid var(--border);padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);display:flex;gap:10px;}
+  .btn{flex:1;border:none;border-radius:11px;padding:15px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;}
+  .btn.primary{background:var(--brass);color:#1a1608;}
+  .btn.primary:disabled{opacity:.35;}
+  .btn.ghost{background:var(--panel2);color:var(--ink);border:1px solid var(--border);flex:0 0 auto;padding:15px 20px;}
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+  .sheet-head h2{font-size:24px;color:var(--brass);}
+  .sheet-head .tag{font-size:13px;color:var(--muted);}
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;}
+  .stat{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;}
+  .stat .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .stat .v{font-size:26px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-top:2px;}
+  .stat .v.brass{color:var(--brass);} .stat .v.cyan{color:var(--cyan);}
+  .abgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .abcard{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
+  .abcard .lbl{font-size:11px;letter-spacing:.1em;color:var(--muted);}
+  .abcard .sc{font-size:20px;font-weight:700;}
+  .abcard .md{font-size:15px;color:var(--cyan);font-family:'JetBrains Mono',monospace;}
+  .listline{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;}
+  .listline:last-child{border-bottom:none;}
+  .listline .r{font-family:'JetBrains Mono',monospace;color:var(--cyan);}
+  .listline.prof .l::before{content:"\25CF";color:var(--brass);font-size:9px;margin-right:8px;vertical-align:middle;}
+  .listline.noprof .l::before{content:"\25CB";color:var(--muted);font-size:9px;margin-right:8px;vertical-align:middle;}
+  .sechead{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:20px 0 8px;}
+  .saved{display:flex;justify-content:space-between;align-items:center;background:var(--panel2);border:1px solid var(--border);
+    border-radius:11px;padding:12px 14px;margin-bottom:8px;}
+  .saved .nm{font-weight:600;} .saved .dt{font-size:12px;color:var(--muted);}
+  .mini{background:none;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;margin-left:6px;}
+  .mini.del{border-color:var(--danger);color:var(--danger);}
+  .note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px;}
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--brass);
+    color:var(--ink);padding:12px 18px;border-radius:11px;font-size:14px;z-index:50;opacity:0;transition:.3s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  .hidden{display:none !important;}
+  .loading{text-align:center;padding:60px 20px;color:var(--muted);}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <svg class="anvil" viewBox="0 0 24 24" fill="none"><path d="M3 9h11l2 2 3-1 1 3-3 1v2h4v2H6v-2h4v-2l-5-2H3V9z" fill="#c9a227"/><rect x="8" y="18" width="8" height="3" rx="1" fill="#8a91a0"/></svg>
+    <div><h1>Character Forge</h1><div class="sub">SRD 5e</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="boot" class="loading">Loading catalog&hellip;</div>
+
+  <div id="app" class="hidden">
+    <div class="steps" id="steps"></div>
+
+    <div id="step-home">
+      <div class="steplabel">Your characters</div>
+      <div id="savedList"></div>
+      <button class="btn primary" style="margin-top:8px" onclick="newChar()">Forge a new character</button>
+      <p class="note" id="storeNote"></p>
+    </div>
+
+    <div id="step-identity" class="hidden">
+      <div class="panel"><label class="fld">Character name</label>
+        <input type="text" id="charName" placeholder="e.g. Thistle Underbough" autocomplete="off"></div>
+      <div class="steplabel">Species</div><div class="grid two" id="raceGrid"></div>
+      <div class="steplabel" style="margin-top:16px">Class</div><div class="grid two" id="classGrid"></div>
+      <div class="steplabel" style="margin-top:16px">Background</div><div class="grid two" id="bgGrid"></div>
+      <div class="panel" style="margin-top:14px"><label class="fld">Level</label>
+        <div class="abctl"><button class="step-btn" onclick="chLevel(-1)">&minus;</button>
+          <span class="abscore mono" id="lvlVal">1</span>
+          <button class="step-btn" onclick="chLevel(1)">+</button>
+          <span class="note" style="margin:0 0 0 12px">Proficiency <b class="mono" id="pbPreview" style="color:var(--brass)">+2</b></span></div></div>
+    </div>
+
+    <div id="step-abilities" class="hidden">
+      <div class="toggle"><button id="tgPoint" class="on" onclick="setGenMode('point')">Point Buy</button>
+        <button id="tgArray" onclick="setGenMode('array')">Standard Array</button></div>
+      <div class="panel">
+        <div class="pts" id="ptsRow"><span class="steplabel" style="margin:0">Points remaining</span><span class="big mono" id="ptsLeft">27</span></div>
+        <div id="abList"></div>
+        <p class="note">Species bonus shown in <span style="color:var(--brass)">gold</span>. Point buy: 8&ndash;15 cost 0&ndash;9 pts. Array: 15, 14, 13, 12, 10, 8.</p>
+      </div>
+    </div>
+
+    <div id="step-skills" class="hidden">
+      <div class="panel"><div class="steplabel" id="skillPrompt">Choose skills</div>
+        <div id="skillChips"></div><p class="note" id="skillNote"></p></div>
+    </div>
+
+    <div id="step-sheet" class="hidden"></div>
+  </div>
+</div>
+
+<div class="navbar hidden" id="navbar">
+  <button class="btn ghost" id="backBtn" onclick="back()">Back</button>
+  <button class="btn primary" id="nextBtn" onclick="next()">Continue</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { loadGameData } from './loader.js';
+
+/* ---------- engine constants (fixed rules, not editable content) ---------- */
+const ABILITIES = ["str","dex","con","int","wis","cha"];
+const AB_FULL = {str:"Strength",dex:"Dexterity",con:"Constitution",int:"Intelligence",wis:"Wisdom",cha:"Charisma"};
+const SKILLS = {"Acrobatics":"dex","Animal Handling":"wis","Arcana":"int","Athletics":"str","Deception":"cha",
+  "History":"int","Insight":"wis","Intimidation":"cha","Investigation":"int","Medicine":"wis","Nature":"int",
+  "Perception":"wis","Performance":"cha","Persuasion":"cha","Religion":"int","Sleight of Hand":"dex","Stealth":"dex","Survival":"wis"};
+const POINT_COST = {8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
+const STD_ARRAY = [15,14,13,12,10,8];
+const ORDER = ['home','identity','abilities','skills','sheet'];
+
+/* ---------- state ---------- */
+let CAT = null, C = null, genMode = 'point', step = 'home';
+const $ = id => document.getElementById(id);
+
+function blank(){
+  return {id:'c'+Date.now(), name:'', race:'', cls:'', bg:'', level:1, genMode:'point',
+    base:{str:8,dex:8,con:8,int:8,wis:8,cha:8}, array:{str:null,dex:null,con:null,int:null,wis:null,cha:null},
+    skills:[], saved:null};
+}
+const race = () => CAT.species.get(C.race);
+const klass = () => CAT.classes.get(C.cls);
+const bg = () => CAT.backgrounds.get(C.bg);
+
+/* ---------- math ---------- */
+const mod = s => Math.floor((s-10)/2);
+const fmt = n => (n>=0?'+':'')+n;
+const profBonus = lvl => Math.ceil(lvl/4)+1;
+function raceBonus(ab){ const r=race(); return (r && r.bonus && r.bonus[ab]) || 0; }
+function finalScore(ab){ const b = genMode==='array' ? (C.array[ab]||8) : C.base[ab]; return b + raceBonus(ab); }
+function hp(){ const cl=klass(); if(!cl) return 0; const conMod=mod(finalScore('con'));
+  const perLvl=(race() && race().hpPerLevel)||0; const avg=cl.hd/2+1;
+  return cl.hd + conMod + (C.level-1)*(avg+conMod) + perLvl*C.level; }
+const ac = () => 10 + mod(finalScore('dex'));
+
+/* ---------- helpers ---------- */
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); }
+function renderSteps(){ const i=ORDER.indexOf(step);
+  $('steps').innerHTML = ORDER.slice(1).map((_,n)=>`<div class="s ${n<i?'on':''}"></div>`).join(''); }
+function show(which){
+  step=which; renderSteps();
+  ['home','identity','abilities','skills','sheet'].forEach(s=>$('step-'+s).classList.toggle('hidden', s!==which));
+  $('navbar').classList.toggle('hidden', which==='home');
+  $('backBtn').style.visibility = which==='identity' ? 'hidden' : 'visible';
+  validate(); window.scrollTo(0,0);
+}
+
+/* ---------- identity ---------- */
+function renderIdentity(){
+  $('charName').value = C.name;
+  $('raceGrid').innerHTML = [...CAT.species.values()].map(r=>{
+    const b=Object.entries(r.bonus||{}).map(([k,v])=>AB_FULL[k].slice(0,3)+' '+fmt(v)).join(', ');
+    return `<button class="opt ${C.race===r.id?'sel':''}" onclick="pick('race','${r.id}')">
+      <div class="name">${r.name}</div><div class="meta">${b}${r.desc?'<br>'+r.desc:''}</div></button>`;}).join('');
+  $('classGrid').innerHTML = [...CAT.classes.values()].map(c=>{
+    const meta=`d${c.hd} \u00B7 ${(c.saves||[]).map(s=>s.toUpperCase()).join('/')} saves${c.cast?' \u00B7 caster':''}`;
+    return `<button class="opt ${C.cls===c.id?'sel':''}" onclick="pick('cls','${c.id}')">
+      <div class="name">${c.name}</div><div class="meta">${meta}${c.desc?'<br>'+c.desc:''}</div></button>`;}).join('');
+  $('bgGrid').innerHTML = [...CAT.backgrounds.values()].map(b=>
+    `<button class="opt ${C.bg===b.id?'sel':''}" onclick="pick('bg','${b.id}')">
+      <div class="name">${b.name}</div><div class="meta">Skills: ${(b.skills||[]).join(', ')}${b.feature?'<br>Feature: '+b.feature:''}</div></button>`).join('');
+  $('lvlVal').textContent=C.level; $('pbPreview').textContent=fmt(profBonus(C.level));
+}
+function pick(field,val){ if(field==='cls' && C.cls!==val) C.skills=[]; C[field==='race'?'race':field]=val; renderIdentity(); validate(); }
+function chLevel(d){ C.level=Math.min(20,Math.max(1,C.level+d)); renderIdentity(); }
+
+/* ---------- abilities ---------- */
+function setGenMode(m){ genMode=m; C.genMode=m; $('tgPoint').classList.toggle('on',m==='point');
+  $('tgArray').classList.toggle('on',m==='array'); $('ptsRow').style.display=m==='point'?'flex':'none'; renderAbilities(); validate(); }
+const pointsUsed = () => ABILITIES.reduce((s,a)=>s+POINT_COST[C.base[a]],0);
+function renderAbilities(){
+  if(genMode==='point'){
+    $('ptsLeft').textContent = 27-pointsUsed();
+    $('abList').innerHTML = ABILITIES.map(a=>{ const sc=C.base[a], rb=raceBonus(a);
+      return `<div class="abrow"><span class="abname">${a}</span>
+        <div class="abctl"><button class="step-btn" onclick="adj('${a}',-1)">&minus;</button>
+        <span class="abscore mono">${sc}</span><button class="step-btn" onclick="adj('${a}',1)">+</button></div>
+        <span class="abbonus">${rb?('+'+rb):''}</span><span class="abmod mono">${fmt(mod(sc+rb))}</span></div>`;}).join('');
+  } else {
+    const used = ABILITIES.map(a=>C.array[a]).filter(v=>v!=null);
+    $('abList').innerHTML = ABILITIES.map(a=>{ const val=C.array[a], rb=raceBonus(a);
+      const opts=STD_ARRAY.map(v=>{ const taken=used.includes(v)&&C.array[a]!==v;
+        return `<option value="${v}" ${val===v?'selected':''} ${taken?'disabled':''}>${v}</option>`;}).join('');
+      return `<div class="abrow"><span class="abname">${a}</span>
+        <select onchange="setArr('${a}',this.value)" style="background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:9px;padding:9px;font-size:16px;font-family:inherit;">
+        <option value="">&mdash;</option>${opts}</select>
+        <span class="abbonus">${rb?('+'+rb):''}</span><span class="abmod mono">${val!=null?fmt(mod(val+rb)):''}</span></div>`;}).join('');
+  }
+}
+function adj(a,d){ const nv=C.base[a]+d; if(nv<8||nv>15) return;
+  const cost=ABILITIES.reduce((s,x)=>s+POINT_COST[x===a?nv:C.base[x]],0);
+  if(cost>27){ toast("Not enough points"); return; } C.base[a]=nv; renderAbilities(); validate(); }
+function setArr(a,v){ C.array[a]= v===''?null:parseInt(v); renderAbilities(); validate(); }
+
+/* ---------- skills ---------- */
+const bgSkills = () => bg() ? (bg().skills||[]) : [];
+function renderSkills(){ const cl=klass(); const bgs=bgSkills();
+  $('skillPrompt').textContent = `Choose ${cl.skillCount} class skills`;
+  $('skillChips').innerHTML = (cl.skills||[]).map(s=>{ const fromBg=bgs.includes(s); const sel=C.skills.includes(s);
+    const cls=fromBg?'chip locked':(sel?'chip sel':'chip'); const click=fromBg?'':`onclick="toggleSkill('${s}')"`;
+    return `<span class="${cls}" ${click}>${s}${fromBg?' \u00B7 bg':''}</span>`;}).join('');
+  $('skillNote').innerHTML = `Chosen ${C.skills.length}/${cl.skillCount}. <b>${bg().name}</b> already grants: ${bgs.join(', ')||'\u2014'} (no double-dip).`;
+}
+function toggleSkill(s){ const cl=klass();
+  if(C.skills.includes(s)) C.skills=C.skills.filter(x=>x!==s);
+  else { if(C.skills.length>=cl.skillCount){ toast("Pick limit reached"); return; } C.skills.push(s); }
+  renderSkills(); validate(); }
+
+/* ---------- sheet ---------- */
+const allProfSkills = () => [...new Set([...C.skills, ...bgSkills()])];
+function renderSheet(){
+  const cl=klass(), r=race(), b=bg(), pb=profBonus(C.level), profSet=allProfSkills();
+  const saveRows=ABILITIES.map(a=>{ const p=cl.saves.includes(a); const v=mod(finalScore(a))+(p?pb:0);
+    return `<div class="listline ${p?'prof':'noprof'}"><span class="l">${AB_FULL[a]}</span><span class="r">${fmt(v)}</span></div>`;}).join('');
+  const skillRows=Object.keys(SKILLS).map(s=>{ const ab=SKILLS[s]; const p=profSet.includes(s); const v=mod(finalScore(ab))+(p?pb:0);
+    return `<div class="listline ${p?'prof':'noprof'}"><span class="l">${s} <span style="color:var(--muted);font-size:11px">${ab}</span></span><span class="r">${fmt(v)}</span></div>`;}).join('');
+  const abCards=ABILITIES.map(a=>{ const sc=finalScore(a);
+    return `<div class="abcard"><div class="lbl">${a.toUpperCase()}</div><div class="sc">${sc}</div><div class="md">${fmt(mod(sc))}</div></div>`;}).join('');
+  let castBlock='', spellBlock='';
+  if(cl.cast){ const dc=8+pb+mod(finalScore(cl.cast)), atk=pb+mod(finalScore(cl.cast));
+    castBlock=`<div class="sechead">Spellcasting (${AB_FULL[cl.cast]})</div>
+      <div class="listline"><span class="l">Spell save DC</span><span class="r">${dc}</span></div>
+      <div class="listline"><span class="l">Spell attack</span><span class="r">${fmt(atk)}</span></div>`;
+    const list=CAT.spellsForClass(C.cls);
+    if(list.length) spellBlock=`<div class="sechead">${cl.name} spells (${list.length})</div>`+
+      list.map(sp=>`<div class="listline"><span class="l">${sp.name} <span style="color:var(--muted);font-size:11px">${sp.level===0?'cantrip':'lvl '+sp.level}</span></span><span class="r" style="font-family:inherit;color:var(--muted);font-size:11px">${sp.school||''}</span></div>`).join('');
+  }
+  const feats=[...((r.traits||[]).map(t=>[r.name,t])), ...((cl.features||[]).map(t=>[cl.name,t])), ...(b.feature?[[b.name,b.feature]]:[])];
+  const featBlock = feats.length ? `<div class="sechead">Features &amp; Traits</div>`+
+    feats.map(([src,t])=>`<div class="listline"><span class="l">${t}</span><span class="r" style="color:var(--muted);font-size:11px">${src}</span></div>`).join('') : '';
+  const profRows=[cl.armor?['Armor',cl.armor]:null, cl.weapons?['Weapons',cl.weapons]:null,
+    (b.tools&&b.tools.length)?['Tools',b.tools.join(', ')]:null, b.languages?['Languages',b.languages+' of choice']:null].filter(Boolean);
+  const profBlock = profRows.length ? `<div class="sechead">Proficiencies</div>`+
+    profRows.map(([k,v])=>`<div class="listline"><span class="l" style="color:var(--muted)">${k}</span><span class="r" style="color:var(--ink);font-family:inherit;font-size:13px;text-align:right;max-width:60%">${v}</span></div>`).join('') : '';
+  $('step-sheet').innerHTML = `<div class="panel">
+    <div class="sheet-head"><div><h2>${C.name||'Unnamed'}</h2>
+      <div class="tag">${r.name} ${cl.name} \u00B7 Level ${C.level} \u00B7 ${b.name}</div></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="k">Armor Class</div><div class="v brass">${ac()}</div></div>
+      <div class="stat"><div class="k">Hit Points</div><div class="v">${hp()}</div></div>
+      <div class="stat"><div class="k">Speed</div><div class="v">${r.speed}</div></div>
+      <div class="stat"><div class="k">Prof. Bonus</div><div class="v cyan">${fmt(pb)}</div></div>
+      <div class="stat"><div class="k">Initiative</div><div class="v cyan">${fmt(mod(finalScore('dex')))}</div></div>
+      <div class="stat"><div class="k">Passive Perc.</div><div class="v">${10+mod(finalScore('wis'))+(profSet.includes('Perception')?pb:0)}</div></div>
+    </div>
+    <div class="abgrid">${abCards}</div>${castBlock}
+    <div class="sechead">Saving Throws</div>${saveRows}
+    <div class="sechead">Skills</div>${skillRows}
+    ${featBlock}${profBlock}${spellBlock}</div>`;
+}
+
+/* ---------- validation / nav ---------- */
+function validate(){
+  let ok=true, hint='';
+  if(step==='identity'){
+    if(!C.name.trim()) hint='Enter a name';
+    else if(!C.race) hint='Choose a species \u2193';
+    else if(!C.cls) hint='Choose a class \u2193';
+    else if(!C.bg) hint='Choose a background \u2193';
+    ok = C.name.trim() && C.race && C.cls && C.bg;
+  }
+  if(step==='abilities'){ if(genMode==='point'){ ok=pointsUsed()<=27; if(!ok) hint='Too many points'; }
+    else { ok=ABILITIES.every(a=>C.array[a]!=null); if(!ok) hint='Assign all six scores'; } }
+  if(step==='skills'){ const need=klass().skillCount; ok=C.skills.length===need; if(!ok) hint='Pick '+need+' skills'; }
+  const nb=$('nextBtn'); nb.disabled=!ok;
+  nb.textContent = step==='sheet' ? 'Save character' : (ok?'Continue':hint);
+}
+function next(){ const i=ORDER.indexOf(step);
+  if(step==='sheet'){ saveChar(); return; }
+  const nx=ORDER[i+1];
+  if(nx==='abilities'){ setGenMode(C.genMode); renderAbilities(); }
+  if(nx==='skills') renderSkills();
+  if(nx==='sheet') renderSheet();
+  show(nx); }
+function back(){ const i=ORDER.indexOf(step);
+  if(step==='identity'){ show('home'); loadSaved(); return; }
+  const pv=ORDER[i-1];
+  if(pv==='abilities') renderAbilities(); if(pv==='skills') renderSkills(); if(pv==='identity') renderIdentity();
+  show(pv); }
+function newChar(){ C=blank(); genMode='point'; renderIdentity(); show('identity'); }
+
+/* ---------- persistence (localStorage, in-memory fallback) ---------- */
+const LS_KEY='cf_characters';
+let hasLS=false; try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); hasLS=true; }catch(e){}
+let mem=[];
+function readAll(){ if(hasLS){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ return []; } } return mem; }
+function writeAll(list){ if(hasLS){ try{ localStorage.setItem(LS_KEY,JSON.stringify(list)); }catch(e){} } else mem=list; }
+function saveChar(){ C.name=C.name||'Unnamed'; C.saved=new Date().toISOString(); C.genMode=genMode;
+  const list=readAll().filter(x=>x.id!==C.id); list.push({...C}); writeAll(list); toast("Saved: "+C.name); show('home'); loadSaved(); }
+function loadSaved(){ const list=readAll().sort((a,b)=>(b.saved||'').localeCompare(a.saved||''));
+  const el=$('savedList');
+  if(!list.length){ el.innerHTML=`<p class="note">No characters yet. Forge one below.</p>`; return; }
+  el.innerHTML=list.map(ch=>{ const r=CAT.species.get(ch.race), c=CAT.classes.get(ch.cls);
+    return `<div class="saved"><div><div class="nm">${ch.name||'Unnamed'}</div>
+      <div class="dt">${r?r.name:'?'} ${c?c.name:'?'} \u00B7 Lv ${ch.level}</div></div>
+      <div><button class="mini" onclick='openChar("${ch.id}")'>Open</button>
+      <button class="mini del" onclick='delChar("${ch.id}")'>Delete</button></div></div>`;}).join('');
+}
+function openChar(id){ const ch=readAll().find(x=>x.id===id); if(!ch) return;
+  C=ch; genMode=ch.genMode||'point'; renderSheet(); show('sheet'); }
+function delChar(id){ writeAll(readAll().filter(x=>x.id!==id)); loadSaved(); }
+
+/* ---------- expose handlers (module scope isn't global) ---------- */
+Object.assign(window, { pick, chLevel, setGenMode, adj, setArr, toggleSkill, next, back, newChar, openChar, delChar });
+
+/* ---------- boot ---------- */
+$('charName') && $('charName').addEventListener('input', e=>{ C.name=e.target.value; validate(); });
+(async function boot(){
+  try { CAT = await loadGameData(); }
+  catch(e){
+    $('boot').innerHTML = `<div class="panel"><h2 style="color:var(--brass)">Couldn't load the catalog</h2>
+      <p class="note">${e.message}<br><br>This app loads its data files over the network, so it must be opened from a web server
+      (your GitHub Pages URL) or a local server &mdash; not by double-clicking the file. For local work run
+      <b>python3 -m http.server</b> in this folder and open the localhost link.</p></div>`;
+    return;
+  }
+  $('boot').classList.add('hidden'); $('app').classList.remove('hidden');
+  $('storeNote').textContent = hasLS ? "Characters save to this device and persist between sessions."
+    : "Heads up: saving is disabled in this context, so characters last only for this session.";
+  C=blank(); renderSteps(); show('home'); loadSaved();
+})();
+</script>
+</body>
+</html>
