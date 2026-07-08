@@ -1,35 +1,125 @@
 {
   "type": "species",
   "entries": [
-    {
-      "id": "human",
-      "name": "Human",
-      "source": "SRD",
-      "bonus": { "str": 1, "dex": 1, "con": 1, "int": 1, "wis": 1, "cha": 1 },
-      "speed": 30,
-      "hpPerLevel": 0,
-      "desc": "Versatile and ambitious; adapt to any calling.",
-      "traits": ["+1 to every ability score", "One extra language"]
-    },
-    {
-      "id": "hill-dwarf",
-      "name": "Hill Dwarf",
-      "source": "SRD",
-      "bonus": { "con": 2, "wis": 1 },
-      "speed": 25,
-      "hpPerLevel": 1,
-      "desc": "Stout, hardy folk with deep roots and long memories.",
-      "traits": ["Darkvision 60 ft", "+1 HP per level", "Advantage vs. poison", "Stonecunning"]
-    },
-    {
-      "id": "high-elf",
-      "name": "High Elf",
-      "source": "SRD",
-      "bonus": { "dex": 2, "int": 1 },
-      "speed": 30,
-      "hpPerLevel": 0,
-      "desc": "Graceful, keen-eyed, and touched by arcane heritage.",
-      "traits": ["Darkvision 60 ft", "One wizard cantrip", "Advantage vs. charm", "Weapon training"]
-    }
-  ]
+  {
+    "id": "aasimar",
+    "name": "Aasimar",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "A creature infused with the light of the Upper Planes.",
+    "traits": ["Celestial Revelation", "Darkvision", "Healing Hands", "Radiant Soul"]
+  },
+  {
+    "id": "dragonborn",
+    "name": "Dragonborn",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Draconic humanoids with breath weapons and elemental resistance.",
+    "traits": ["Breath Weapon", "Draconic Ancestry", "Damage Resistance"]
+  },
+  {
+    "id": "dwarf",
+    "name": "Dwarf",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Stout humanoids known for endurance and craft.",
+    "traits": ["Darkvision", "Dwarven Resilience", "Stonecunning"]
+  },
+  {
+    "id": "elf",
+    "name": "Elf",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Agile, long-lived humanoids with deep ties to the Feywild.",
+    "traits": ["Darkvision", "Fey Ancestry", "Trance"]
+  },
+  {
+    "id": "gnome",
+    "name": "Gnome",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Small, inventive humanoids with a knack for tinkering and magic.",
+    "traits": ["Darkvision", "Gnome Cunning"]
+  },
+  {
+    "id": "goliath",
+    "name": "Goliath",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Giant-kin shaped by the harsh environment of mountain peaks.",
+    "traits": ["Giant Ancestry", "Powerful Build", "Mountain Born"]
+  },
+  {
+    "id": "halfling",
+    "name": "Halfling",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Small humanoids who value home, food, and comfort.",
+    "traits": ["Brave", "Halfling Nimbleness", "Lucky"]
+  },
+  {
+    "id": "human",
+    "name": "Human",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Versatile and ambitious; adapt to any calling.",
+    "traits": ["Resourceful", "Skilled", "Inspiration"]
+  },
+  {
+    "id": "orc",
+    "name": "Orc",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Resilient humanoids with physical power and deep tribal bonds.",
+    "traits": ["Adrenaline Rush", "Darkvision", "Powerful Build"]
+  },
+  {
+    "id": "tiefling",
+    "name": "Tiefling",
+    "source": "PHB2024",
+    "bonus": null,
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Humanoids with an infernal heritage, marked by horns and tails.",
+    "traits": ["Darkvision", "Fiendish Legacy", "Infernal Resistance"]
+  },
+  {
+    "id": "half-elf",
+    "name": "Half-Elf",
+    "source": "SRD2014",
+    "bonus": { "cha": 2, "other": 2 },
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "A blend of human versatility and elven grace.",
+    "traits": ["Darkvision", "Fey Ancestry", "Skill Versatility"]
+  },
+  {
+    "id": "half-orc",
+    "name": "Half-Orc",
+    "source": "SRD2014",
+    "bonus": { "str": 2, "con": 1 },
+    "speed": 30,
+    "hpPerLevel": 0,
+    "desc": "Hardened warriors born of orc and human ancestry.",
+    "traits": ["Darkvision", "Menacing", "Relentless Endurance", "Savage Attacks"]
+  }
+]
 }
